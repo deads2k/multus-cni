@@ -3,6 +3,18 @@ set -o errexit
 
 export PATH=${PATH}:./bin
 
+<<<<<<< HEAD
+=======
+# define the OCI binary to be used. Acceptable values are `docker`, `podman`.
+# Defaults to `docker`.
+OCI_BIN="${OCI_BIN:-docker}"
+
+# define the deployment spec to use when deploying multus.
+# Acceptable values are `legacy-multus-daemonset.yml`. `multus-daemonset.yml`.
+# Defaults to `multus-daemonset.yml`.
+MULTUS_MANIFEST="${MULTUS_MANIFEST:-multus-daemonset.yml}"
+
+>>>>>>> original/master
 kind_network='kind'
 reg_name='kind-registry'
 reg_port='5000'
@@ -60,7 +72,7 @@ kind export kubeconfig
 sudo env PATH=${PATH} koko -d kind-worker,eth1 -d kind-worker2,eth1
 sleep 1
 kubectl -n kube-system wait --for=condition=available deploy/coredns --timeout=300s
-kubectl create -f multus-daemonset.yml
+kubectl create -f "$MULTUS_MANIFEST"
 sleep 1
 kubectl -n kube-system wait --for=condition=ready -l name=multus pod --timeout=300s
 kubectl create -f cni-install.yml
